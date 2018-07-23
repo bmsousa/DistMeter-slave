@@ -17,11 +17,15 @@ public class DistmeterSlave  {
     ConfManager confManager;
     //ProcessorInfo cpuinfo;
     //MemoryInfo meminfo;
-    DismeterRESTClient rstCli;
+    DismeterRESTClient rstCli; // interface with Distmeter server
+    //TODO: Apache commons numa thread à parte.
+    //TODO: implementação
 
+    //TODO: Implement threads no slave
     //Threads (
     //  to sync with Server
     //  to control tests (run commands)
+
 
 
     public DistmeterSlave(ConfManager confManager){
