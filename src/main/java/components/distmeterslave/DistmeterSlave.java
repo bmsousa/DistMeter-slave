@@ -6,26 +6,21 @@ import org.apache.commons.exec.CommandLine;
 import org.apache.commons.exec.DefaultExecutor;
 import org.apache.commons.exec.ExecuteStreamHandler;
 import org.apache.commons.exec.PumpStreamHandler;
-import org.jutils.jhardware.HardwareInfo;
-import org.jutils.jhardware.model.MemoryInfo;
-import org.jutils.jhardware.model.ProcessorInfo;
+
 
 import java.io.IOException;
+import java.io.File;
 
 public class DistmeterSlave  {
 
     ConfManager confManager;
     //ProcessorInfo cpuinfo;
     //MemoryInfo meminfo;
-    DismeterRESTClient rstCli; // interface with Distmeter server
-    //TODO: Apache commons numa thread à parte.
-    //TODO: implementação
+    DismeterRESTClient rstCli;
 
-    //TODO: Implement threads no slave
     //Threads (
     //  to sync with Server
     //  to control tests (run commands)
-
 
 
     public DistmeterSlave(ConfManager confManager){
@@ -55,23 +50,36 @@ public class DistmeterSlave  {
         }
     }
 
-    /**
-     * TODO: remove prints...
-     *
-     */
-    /*
-    public void get_info(String []args){
-        //Get named info
-        System.out.println("Cache size: " + this.cpuinfo.getCacheSize());
-        System.out.println("Family: " + this.cpuinfo.getFamily());
-        System.out.println("Speed (Mhz): " + this.cpuinfo.getMhz());
-        System.out.println("N cores: " + this.cpuinfo.getNumCores());
+    public void specs() {
+        /* Total number of processors or cores available to the JVM */
+        System.out.println("Available processors (cores): " +
+                Runtime.getRuntime().availableProcessors());
 
-        //Get named info
-        System.out.println("Available mem: " + this.meminfo.getAvailableMemory());
-        System.out.println("Totalmemory: " + this.meminfo.getTotalMemory());
-        System.out.println(": " + this.meminfo.getFreeMemory());
-    }*/
+        /* Total amount of free memory available to the JVM */
+        System.out.println("Free memory (bytes): " +
+                Runtime.getRuntime().freeMemory());
+
+        /* This will return Long.MAX_VALUE if there is no preset limit */
+        long maxMemory = Runtime.getRuntime().maxMemory();
+        /* Maximum amount of memory the JVM will attempt to use */
+        System.out.println("Maximum memory (bytes): " +
+                (maxMemory == Long.MAX_VALUE ? "no limit" : maxMemory));
+
+        /* Total memory currently available to the JVM */
+        System.out.println("Total memory available to JVM (bytes): " +
+                Runtime.getRuntime().totalMemory());
+
+        /* Get a list of all filesystem roots on this system */
+        File[] roots = File.listRoots();
+
+        /* For each filesystem root, print some info */
+        for (File root : roots) {
+            System.out.println("File system root: " + root.getAbsolutePath());
+            System.out.println("Total space (bytes): " + root.getTotalSpace());
+            System.out.println("Free space (bytes): " + root.getFreeSpace());
+            System.out.println("Usable space (bytes): " + root.getUsableSpace());
+        }
+    }
 
     public void execommand_op1(String cmd){
         String line =cmd ;
