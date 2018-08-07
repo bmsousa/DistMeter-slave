@@ -1,26 +1,32 @@
 import components.distmeterslave.DistmeterSlave;
+import components.distmeterslave.Commands;
 import conf.ConfManager;
+import utilities.MessageSlave;
 
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 
 public class DistMeter {
 
-    public static void main(String [] args){
+    public static void main(String [] args) {
 
         ConfManager confManager = new ConfManager(); // Configuration object
+        ConcurrentLinkedQueue<MessageSlave> myqueue=new ConcurrentLinkedQueue<>();
+        ConcurrentLinkedQueue<MessageSlave> myqueueCommands=new ConcurrentLinkedQueue<>();
+        ConcurrentLinkedQueue<MessageSlave> myqueueComServer=new ConcurrentLinkedQueue<>();
+        Thread tcommands = new Thread(new Commands(myqueueCommands));
+        DistmeterSlave distmeterslave = new DistmeterSlave(confManager,myqueue,myqueueCommands,myqueueComServer,tcommands);
 
-        DistmeterSlave distmeterslave = new DistmeterSlave(confManager);
-        //distmeterslave.get_info(args);
+        Thread tslave = new Thread(distmeterslave);
+        try {
+            tcommands.join();
+            tslave.join();
+            tslave.start();
+            tcommands.start();
+            myqueue.add(new MessageSlave(2,"java -version"));
 
-        System.out.println("cmd 1");
-        distmeterslave.execommand_op1("ls -l");
-
-        System.out.println("cmd 2");
-        distmeterslave.execommand_op2("ls -l");
-
-
-        System.out.println("To perform registration");
-        distmeterslave.register();
-
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }
