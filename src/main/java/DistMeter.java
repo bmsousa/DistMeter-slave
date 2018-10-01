@@ -23,7 +23,9 @@ public class DistMeter {
             tslave.join();
             tslave.start();
             tcommands.start();
-            myqueue.add(new MessageSlave(2,"java -version"));
+           // myqueue.add(new MessageSlave(2,"java -version"));
+            myqueueComServer.add(new MessageSlave(3,"register"));
+
 
         } catch (InterruptedException e) {
             e.printStackTrace();
