@@ -28,7 +28,7 @@ Thread tcomserver;
 
     public DistmeterSlave(ConfManager confManager,ConcurrentLinkedQueue q, ConcurrentLinkedQueue q1, ConcurrentLinkedQueue q2, Thread tcommands) {
         this.confManager = confManager;
-        this.rstCli = new DismeterRESTClient("localhost:8080");//TODO read from configuration
+        this.rstCli = new DismeterRESTClient("52.47.208.23:8886");//TODO read from configuration
         this.myqueue = q;
         this.myqueueCommands = q1;
         this.myqueueComServer = q2;
@@ -59,19 +59,28 @@ Thread tcomserver;
 
     @Override
     public void run() {
-        System.out.println(Thread.currentThread().getName()
-                + ", executing run() method!");
         while(true) {
-            MessageSlave aux = myqueue.poll();
-            if (aux != null) {
+   //         MessageSlave aux = myqueue.poll();
+            MessageSlave auxComServer = myqueueComServer.poll();
+         /*   if (aux != null) {
                 System.out.println(aux);
                 switch (aux.getMsgtype()) {
                     case MessageSlave.MESSAGETOCOMMANDS:
                         myqueueCommands.add(aux); //CONTROLAR ESTADO DO PEDIDO
                         System.out.println("ADICIONEI");
-                        break; //TODO RESTANTES TIPOS
+                        break;
                 }
-
+//TODO RESTANTES TIPOS
+            }*/
+            if (auxComServer != null) {
+                System.out.println(auxComServer);
+                switch (auxComServer.getMsgtype()) {
+                    case MessageSlave.MESSAGETOCOMSERVER:
+                        this.register();
+                        System.out.println("EFETUADO REGISTO");
+                        break;
+                }
+//TODO RESTANTES TIPOS
             }
             try {
                 Thread.sleep(1000);

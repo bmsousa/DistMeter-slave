@@ -19,7 +19,7 @@ public class Commands implements Runnable {
         while (true) {
             MessageSlave aux = myqueue.poll();
             if (aux != null) {
-                                System.out.println("COMMANMDS" + aux);
+                                System.out.println("COMMANDS" + aux);
                 execommand_op1(aux.getCmd());
             }
             try {

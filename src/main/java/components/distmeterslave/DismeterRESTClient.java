@@ -31,14 +31,11 @@ public class DismeterRESTClient {
 
         HttpClient client = new HttpClient();
 
-        /*
-        curl -XPOST http://localhost:8080/server/slaves/register -d '{"SlaveID": 1, "Name":"teste", "SlaveIP":"192.168.2.50"}' -H 'Content-Type: application/json'
-         */
-        Map<String, ?> slaux = U.map("SlaveID", 1, "Name", "teste", "SlaveIP", "192.168.2.50");
+        Map<String, ?> slaux = U.map("SlaveID", 1, "Name", "SLAVE DEMONSTRACAO", "SlaveIP", "192.168.1.10");
         System.out.println(HTTP.post(url).data(slaux).fetch());
 
-        //rstClient.post(url, slv.getClass() );
-
+       // rstClient.post(url, slv.getClass() );
+        // curl -X POST http://localhost:8080/server/slaves/register -d '{"SlaveID": 1, "Name":"teste", "SlaveIP":"192.168.2.50:8886"}' -H 'Content-Type: application/json'
         return true;
     }
 }
